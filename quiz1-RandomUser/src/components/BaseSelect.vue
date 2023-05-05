@@ -5,6 +5,12 @@ div
     option(v-for="option, idx in options" :key="idx" :value="option" :selected="option === modelValue") {{ option }}
 </template>
 
+<script lang="ts">
+export default {
+  inheritAttrs: false
+}
+</script>
+
 <script setup lang="ts">
 interface Props {
   label?: string

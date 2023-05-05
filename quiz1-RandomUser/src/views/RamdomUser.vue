@@ -1,5 +1,6 @@
 <template lang="pug">
 div(class="px-[30px] my-[50px] relative h-screen")
+  UserModal(:userData="checkUser") /
   div(class="animate-rotate absolute top-[50%] left-[50%] translate-x-[-50%] translate-y-[-50%]" v-if="isLoading")
     svg(class="animate-spin h-[50px] w-[50px] mr-3" viewBox="0 0 24 24" fill="none")
       circle(class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4")
@@ -14,7 +15,7 @@ div(class="px-[30px] my-[50px] relative h-screen")
         li(class="rounded-[8px] border p-[8px] h-[40px]" @click="showType = 'list'") 選單
   .w-full.flex
   ul(class=" flex flex-wrap gap-[15px]")
-    li(v-for="(user, i) in currentPageData" :class="['mb-[15px]', showType === 'card' ? 'w-[calc(20%-12px)]' : 'w-full']")
+    li(v-for="(user, i) in currentPageData" :class="['mb-[15px] cursor-pointer', showType === 'card' ? 'w-[calc(20%-12px)]' : 'w-full']" @click="openUserModal(user)")
       Card.w-full.h-full
         template(#title)
           .flex.items-center
@@ -24,7 +25,7 @@ div(class="px-[30px] my-[50px] relative h-screen")
           ul
             li.flex
               p(class="mr-[15px]") 生日:
-              p {{ user.dob.date }}
+              p(v-timeFormat="user.dob.date")
             li.flex
               p(class="mr-[15px]") 年齡:
               p {{ user.dob.age }}
@@ -42,39 +43,14 @@ div(class="px-[30px] my-[50px] relative h-screen")
 
 <script setup lang="ts">
 import axios from 'axios'
-import { computed, ref, watch } from 'vue'
+import { computed, ref, watch, type Ref } from 'vue'
 import Card from '@/components/Card.vue'
 import BaseSelect from '@/components/BaseSelect.vue'
 import Pagination from '@/components/Pagination.vue'
-
-interface UserData {
-  name: {
-    title: string
-    first: string
-    last: string
-  }
-  dob: {
-    date: string
-    age: number
-  }
-  nat: string
-  phone: string
-  picture: {
-    large: string
-    medium: string
-    thumbnail: string
-  }
-  login: {
-    uuid: string
-    username: string
-    password: string
-    salt: string
-    md5: string
-    sha1: string
-    sha256: string
-  }
-}
-
+import UserModal from '@/components/UserModal.vue'
+import { useModal } from '@/stores/modal'
+import { storeToRefs } from 'pinia'
+import type { UserData } from '@/model/user'
 const userData = ref<UserData[]>([])
 
 const isLoading = ref(false)
@@ -166,4 +142,20 @@ const showType = ref<string>(localStorage.getItem('pageShowType') || 'card')
 watch(showType, (val) => {
   localStorage.setItem('pageShowType', val)
 })
+
+// 開啟modal
+const modalStore = useModal()
+
+const { toggleModal } = modalStore
+
+const checkUser = ref<UserData | null>(null) as Ref<UserData>
+
+const openUserModal = (user: UserData) => {
+  if (!user) {
+    return
+  }
+
+  toggleModal(true)
+  checkUser.value = user
+}
 </script>
