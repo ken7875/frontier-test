@@ -12,20 +12,25 @@ section(class="px-[100px] py-[30px] bg-[#0F172A] w-full h-screen")
     article(class="border border-white w-[50%]")
       div(v-for="tree in pairAryToTreeViewer" :key="tree.id")
         p
-          span(class="text-white") {{ tree.key }}
-          span(class="text-white") {{ tree.value }}
+          span(class="text-white") {{ tree.key }}:
+          span(class="text-white")
+            template(v-if="Object.keys(tree.child).length > 0")
+              span(v-show="!tree.showChild" @click="tree.showChild = !tree.showChild") [ + ]
+              span(v-show="tree.showChild" @click="tree.showChild = !tree.showChild") [ - ]
+          span(class="text-white" v-show="Object.keys(tree.child).length === 0") {{ tree.value }}
+        TreeItem(:treeData="tree.child" v-show="tree.showChild") /
 </template>
 
 <script setup lang="ts">
-import { ref, watch } from 'vue';
+import { ref } from 'vue';
+import TreeItem from '@/components/TreeItem.vue'
+import type { TreeData } from '@/model/tree'
 
 interface Pair {
   key: string | number
   value: string | number
   id: number
 }
-
-type treeData = { key: string | number, value: string | number, child: Record<string, treeData> }
 
 const pairAry = ref<Pair[]>([])
 const dataId = ref(0)
@@ -48,50 +53,57 @@ const editPair = (type: 'key' | 'value', value: string | number, id: number) => 
   treeViewerHandler(pairAry.value)
 }
 
-const pairAryToTreeViewer = ref<Record<string, treeData>>({})
+const pairAryToTreeViewer = ref<Record<string, TreeData>>({})
 
 const findChild = (pair: Pair) => {
-  let splitKey =  pair.key.toString().split('.')
-  console.log(splitKey, 'splitKey')
-  for(let i = 0; i < splitKey.length - 1; i++) {
-    const parent = splitKey[i]
-    const child = splitKey[i + 1]
+  const pairKeyAry = pair.key.toString().split('.') // 將key名稱以.拆分
+  const rootKey = pairKeyAry[0]
 
-    pairAryToTreeViewer.value[parent].child[child] = {
-      key: child,
-      value: '',
-      child: {}
-    }
-  }
-  // while(pairKey.indexOf('.') > -1) {
-  //   console.log(pairKey, 'pairKey')
+  let i = 0
+  let level = 0
+
+  const recursive = (childData: Record<string, TreeData>, level: number) => {
     
-  // }
+    if(i >= pairKeyAry.length - 1) { // 若超出key名稱數量，結束遞迴
+      return
+    }
+
+    level++ // 計算此層為第幾層
+    const nextKey = pairKeyAry[++i] // 取得下個key名稱
+
+    if(!childData[nextKey]) { // 若為不重複的 key 在做新增，避免覆蓋舊有的值
+      childData[nextKey] = {
+        key: nextKey,
+        value: pair.value,
+        child: {},
+        level,
+        showChild: true
+      }
+    }
+
+    recursive(childData[nextKey].child, level)
+  }
+
+  recursive(pairAryToTreeViewer.value[rootKey].child, 0) // 從最上層的子層開始跑遞迴
 }
 
 const treeViewerHandler = (pairAry: Pair[]) => {
   pairAryToTreeViewer.value = {}
   pairAry.forEach(pair => {
     const key = pair.key.toString().split('.')[0]
-    pairAryToTreeViewer.value[key] = {
-      key: key,
-      value: pair.value,
-      child: {}
+    if(!pairAryToTreeViewer.value[key]) {
+      pairAryToTreeViewer.value[key] = {
+        key: key,
+        value: pair.value,
+        child: {},
+        level: 0,
+        showChild: true
+      }
     }
+
     if(pair.key.toString().includes('.')) {
       findChild(pair)
     }
   })
 }
-
-// if(pair.key.toString().includes('.')) {
-//       findChild(pair)
-//     } else {
-//       console.log(pair.key)
-//       pairAryToTreeViewer.value[pair.key] = {
-//         key: pair.key,
-//         value: pair.value,
-//         child: {}
-//       }
-//     }
 </script>

@@ -1,0 +1,1 @@
+export type TreeData = { key: string | number, value: string | number, child: Record<string, TreeData>, level: number, showChild: boolean }
