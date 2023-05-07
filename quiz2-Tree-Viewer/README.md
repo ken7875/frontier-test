@@ -1,25 +1,6 @@
-# quiz2-Tree-Viewer
+# 第二題測驗(Nested Key-Value Pair Tree Viewer)
 
-This template should help get you started developing with Vue 3 in Vite.
-
-## Recommended IDE Setup
-
-[VSCode](https://code.visualstudio.com/) + [Volar](https://marketplace.visualstudio.com/items?itemName=Vue.volar) (and disable Vetur) + [TypeScript Vue Plugin (Volar)](https://marketplace.visualstudio.com/items?itemName=Vue.vscode-typescript-vue-plugin).
-
-## Type Support for `.vue` Imports in TS
-
-TypeScript cannot handle type information for `.vue` imports by default, so we replace the `tsc` CLI with `vue-tsc` for type checking. In editors, we need [TypeScript Vue Plugin (Volar)](https://marketplace.visualstudio.com/items?itemName=Vue.vscode-typescript-vue-plugin) to make the TypeScript language service aware of `.vue` types.
-
-If the standalone TypeScript plugin doesn't feel fast enough to you, Volar has also implemented a [Take Over Mode](https://github.com/johnsoncodehk/volar/discussions/471#discussioncomment-1361669) that is more performant. You can enable it by the following steps:
-
-1. Disable the built-in TypeScript Extension
-    1) Run `Extensions: Show Built-in Extensions` from VSCode's command palette
-    2) Find `TypeScript and JavaScript Language Features`, right click and select `Disable (Workspace)`
-2. Reload the VSCode window by running `Developer: Reload Window` from the command palette.
-
-## Customize configuration
-
-See [Vite Configuration Reference](https://vitejs.dev/config/).
+Demo網址 [https://playful-moonbeam-d23dcd.netlify.app/](https://playful-moonbeam-d23dcd.netlify.app/).
 
 ## Project Setup
 
@@ -27,20 +8,19 @@ See [Vite Configuration Reference](https://vitejs.dev/config/).
 npm install
 ```
 
-### Compile and Hot-Reload for Development
+### 本地開發(開啟專案)指令
 
 ```sh
 npm run dev
 ```
 
-### Type-Check, Compile and Minify for Production
+### 打包正式環境指令
 
 ```sh
 npm run build
 ```
 
-### Lint with [ESLint](https://eslint.org/)
-
-```sh
-npm run lint
-```
+## 該專案遇到的問題
+1. 之前沒有使用 pug 開發的經驗，所以在 linter 配置上遇到一些問題。
+2. 在樹狀資料結構處理上花了蠻長一段時間的(大概花了1天半時間)，原本想直接用 object 做掉，但是遇到每輸入一個字就新增一個key的問題
+>>>後來是將 input 輸入的值用 array 形式保存，再將 array 轉換為 object 樹狀結構。

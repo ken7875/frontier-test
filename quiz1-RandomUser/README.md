@@ -1,6 +1,4 @@
-# frontier-test
-
-## Customize configuration
+# 第一題測驗(Random User)
 
 Demo網址 [https://playful-moonbeam-d23dcd.netlify.app/](https://playful-moonbeam-d23dcd.netlify.app/).
 
