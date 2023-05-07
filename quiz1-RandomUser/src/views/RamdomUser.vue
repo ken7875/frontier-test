@@ -36,8 +36,8 @@ div(class="px-[30px] my-[50px] relative h-screen")
               p(class="mr-[15px]") 電話:
               p {{ user.phone }}
           div(class="relative px-2 h-[45px]")
-            i(class="fa-regular fa-heart absolute top-[50%] translate-y-[-50%] right-[2%] text-[35px]" @click="setFavorite('add', user.login.uuid)" v-show="favorData.indexOf(user.login.uuid) <= -1")
-            i(class="fa-solid fa-heart absolute top-[50%] translate-y-[-50%] right-[2%] text-[35px]" @click="setFavorite('remove', user.login.uuid)" v-show="favorData.indexOf(user.login.uuid) > -1")
+            i(class="fa-regular fa-heart absolute top-[50%] translate-y-[-50%] right-[2%] text-[35px]" @click.stop.prevent="setFavorite('add', user.login.uuid)" v-show="favorData.indexOf(user.login.uuid) <= -1")
+            i(class="fa-solid fa-heart absolute top-[50%] translate-y-[-50%] right-[2%] text-[35px]" @click.stop.prevent="setFavorite('remove', user.login.uuid)" v-show="favorData.indexOf(user.login.uuid) > -1")
   Pagination(:totalDataLen="renderData.length" v-model:curPage="curPage" :eachPageTotal="perPageDataNum" class="mt-[30px] w-fit mx-auto") /
 </template>
 
