@@ -7,7 +7,7 @@ div(class="px-[30px] my-[50px] relative h-screen")
       path(class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z")
   nav.flex.justify-between.items-center.mb-5(v-else)
     ul(class="flex")
-      li(:class="['underline decoration-2 text-[1.2rem] mr-[10px] cursor-pointer', curCategory === category ? 'text-[#948Af8]' : 'text-[#CEBCFB]']  " v-for="(category, i) in categoryAry" @click="curCategory = category") {{ category }}
+      li(:class="['underline decoration-2 text-[1.2rem] mr-[10px] cursor-pointer', curCategory === category ? 'text-[#948Af8]' : 'text-[#CEBCFB]']  " v-for="(category, i) in categoryAry" :key="i" @click="curCategory = category") {{ category }}
     div(class="flex items-center gap-[8px]")
       BaseSelect(v-model="perPageDataNum" :options="dataNumAry" class="w-[150px] h-[40px]")
       ul(class="flex gap-[8px]")
@@ -15,7 +15,7 @@ div(class="px-[30px] my-[50px] relative h-screen")
         li(class="rounded-[8px] border p-[8px] h-[40px]" @click="showType = 'list'") 選單
   .w-full.flex
   ul(class=" flex flex-wrap gap-[15px]")
-    li(v-for="(user, i) in currentPageData" :class="['mb-[15px] cursor-pointer', showType === 'card' ? 'w-[calc(20%-12px)]' : 'w-full']" @click="openUserModal(user)")
+    li(v-for="(user, i) in currentPageData" :key="i" :class="['mb-[15px] cursor-pointer', showType === 'card' ? 'w-[calc(20%-12px)]' : 'w-full']" @click="openUserModal(user)")
       Card.w-full.h-full
         template(#title)
           .flex.items-center
