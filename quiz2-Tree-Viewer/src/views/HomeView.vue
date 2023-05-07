@@ -5,12 +5,12 @@ section(class="px-[100px] py-[30px] bg-[#0F172A] w-full h-screen")
     article(class="border border-white w-[50%] px-[20px] pt-[15px]")
       button(class="h-[50px] bg-white mb-[20px] px-[15px] text-[1.2rem] float-right" @click="addNewPair") + Add new pair
       ul.w-full
-        li.flex.w-full.justify-between.flex-nowrap.mb-5(v-for="pair in pairAry" :key="pair.name")
-          input(class="w-[40%] h-[35px] px-[5px]" @input="($event) => editPair('key', $event.target.value, pair.id)")
-          input(class="w-[40%] h-[35px] px-[5px]" @input="($event) => editPair('value', $event.target.value, pair.id)")
+        li.flex.w-full.justify-between.flex-nowrap.mb-5(v-for="pair in pairAry" :key="pair.id")
+          input(class="w-[40%] h-[35px] px-[5px]" @input="($event) => editPair('key', $event.target?.value, pair.id)")
+          input(class="w-[40%] h-[35px] px-[5px]" @input="($event) => editPair('value', $event.target?.value, pair.id)")
           button(class="w-[10%] h-[35px] bg-white") -
     article(class="border border-white w-[50%]")
-      div(v-for="tree in pairAryToTreeViewer" :key="tree.id")
+      div(v-for="tree in pairAryToTreeViewer" :key="tree.key")
         p
           span(class="text-white") {{ tree.key }}:
           span(class="text-white")

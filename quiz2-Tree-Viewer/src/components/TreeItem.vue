@@ -1,6 +1,6 @@
 <template lang="pug">
 ul(v-if="hasChild")
-  li(v-for="(tree) in treeData" :key="tree")
+  li(v-for="(tree) in treeData" :key="tree.key")
     p(v-show="tree.key" class="text-white" :style="{'margin-left': `${tree.level * 15}px`}")
       span(class="font-bold mr-[8px]") {{ tree.key }} :
       span(class="text-white")
@@ -16,7 +16,7 @@ import type { TreeData } from '@/model/tree'
 import { computed } from 'vue';
 
 interface Props {
-  treeData: TreeData
+  treeData: Record<string, TreeData>
 }
 
 const props = defineProps<Props>()

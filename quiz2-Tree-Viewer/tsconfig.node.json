@@ -4,5 +4,10 @@
   "compilerOptions": {
     "composite": true,
     "types": ["node"]
+  },
+  "vueCompilerOptions": {
+    "plugins": [
+      "@volar/vue-language-plugin-pug"
+    ]
   }
 }
