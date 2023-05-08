@@ -8,7 +8,7 @@ section(class="px-[100px] py-[30px] bg-[#0F172A] w-full h-screen")
         li.flex.w-full.justify-between.flex-nowrap.mb-5(v-for="pair in pairAry" :key="pair.id")
           input(class="w-[40%] h-[35px] px-[5px]" @input="($event) => editPair('key', $event.target?.value, pair.id)")
           input(class="w-[40%] h-[35px] px-[5px]" @input="($event) => editPair('value', $event.target?.value, pair.id)")
-          button(class="w-[10%] h-[35px] bg-white") -
+          button(class="w-[10%] h-[35px] bg-white" @click="deleteData(pair.id)") -
     article(class="border border-white w-[50%]")
       div(v-for="tree in pairAryToTreeViewer" :key="tree.key")
         p
@@ -55,6 +55,7 @@ const editPair = (type: 'key' | 'value', value: string | number, id: number) => 
 
 const pairAryToTreeViewer = ref<Record<string, TreeData>>({})
 
+// 渲染子層功能
 const findChild = (pair: Pair) => {
   const pairKeyAry = pair.key.toString().split('.') // 將key名稱以.拆分
   const rootKey = pairKeyAry[0]
@@ -87,10 +88,16 @@ const findChild = (pair: Pair) => {
   recursive(pairAryToTreeViewer.value[rootKey].child, 0) // 從最上層的子層開始跑遞迴
 }
 
+// 樹狀圖渲染
 const treeViewerHandler = (pairAry: Pair[]) => {
   pairAryToTreeViewer.value = {}
   pairAry.forEach(pair => {
     const key = pair.key.toString().split('.')[0]
+
+    if(!key) {
+      return
+    }
+
     if(!pairAryToTreeViewer.value[key]) {
       pairAryToTreeViewer.value[key] = {
         key: key,
@@ -105,5 +112,15 @@ const treeViewerHandler = (pairAry: Pair[]) => {
       findChild(pair)
     }
   })
+}
+
+const deleteData = (id: number) => {
+  pairAry.value.forEach((pair: Pair, idx: number) => {
+    if(pair.id === id) {
+      pairAry.value.splice(idx, 1)
+    }
+  })
+
+  treeViewerHandler(pairAry.value)
 }
 </script>
